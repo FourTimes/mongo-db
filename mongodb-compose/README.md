@@ -1,2 +1,2 @@
 
-	mongo -h 13.82.230.104 -u user -p --authenticationDatabase demo
+	mongo -h 13.82.230.100 -u user -p --authenticationDatabase demo
