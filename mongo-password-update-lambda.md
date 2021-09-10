@@ -67,7 +67,7 @@ Create the secrets in aws secret manager in the name of mongodb-dev
 
 
 def update_db_user_password(region, api_key, mongoAuth='mongodb-dev', password=generate_random_password(), ):
-    mongoCredentials = get_secret('eu-west-1', mongoAuth)
+    mongoCredentials = get_secret(region, mongoAuth)
     for key, value in mongoCredentials.items():
         if key == 'GroupId':
             GroupId = value
