@@ -1,5 +1,5 @@
-variable "accessKey" {}
-variable "secretKey" {}
+# variable "accessKey" {}
+# variable "secretKey" {}
 variable "region" {}
 variable  "lambdaname" {}
 variable  "tagname" {}
