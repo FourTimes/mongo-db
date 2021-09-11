@@ -38,9 +38,7 @@ resource "aws_iam_policy" "policy" {
     {
       "Effect": "Allow",
       "Action": [
-        "rds:StopDBInstan*",
-        "rds:DescribeDBInstan*",
-        "rds:ListTagsForResou*",
+        "secretsmanager:*",
         "cloudwatch:*",
         "events:*"
       ],
