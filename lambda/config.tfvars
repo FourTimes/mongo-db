@@ -1,6 +1,5 @@
 # accessKey           =""
 # secretKey           =""
-region              ="eu-west-1"
-lambdaname          ="lambda-mongodb-password-update"
-tagName             ="office-hours"
-tagValue            ="ec-data-platform"
+region     = "eu-west-1"
+lambdaname = "lambda-mongodb-password-update"
+

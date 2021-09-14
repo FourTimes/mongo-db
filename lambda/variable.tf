@@ -2,5 +2,5 @@
 # variable "secretKey" {}
 variable "region" {}
 variable  "lambdaname" {}
-variable  "tagname" {}
-variable  "tagvalue" {}
+# variable  "tagname" {}
+# variable  "tagvalue" {}

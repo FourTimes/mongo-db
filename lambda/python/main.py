@@ -4,10 +4,15 @@ import string
 import random
 import requests
 from requests.auth import HTTPDigestAuth
+import os
+
+# VARIABLE SECTION
+
+REGION=os.environ['REGION']
+
+
 
 # Random password generators
-
-
 def generate_random_password():
     characters = list(string.ascii_letters + string.digits + "!#$%^&*()")
     length = 16
@@ -21,19 +26,19 @@ def generate_random_password():
 # aws login session init
 
 
-def init_aws_session(Region):
+def init_aws_session():
     session = boto3.session.Session()
     client = session.client(
         service_name='secretsmanager',
-        region_name=Region
+        region_name=REGION
     )
     return client
 
 # aws get session
 
 
-def get_secret(region, key):
-    client = init_aws_session(region)
+def get_secret(key):
+    client = init_aws_session()
     get_secret_value_response = client.get_secret_value(SecretId=key)[
         'SecretString']
     return json.loads(get_secret_value_response)
@@ -41,11 +46,11 @@ def get_secret(region, key):
 # aws update secret key
 
 
-def update_secret(region, key, secret=generate_random_password()):
+def update_secret(key, secret=generate_random_password()):
     print(secret)
-    client = init_aws_session(region)
+    client = init_aws_session()
     client.update_secret(SecretId=key, SecretString=json.dumps({key: secret}))
-    return get_secret('eu-west-1', 'api_key')
+    return get_secret(key)
 
 # update the mongodb password via rest api.
 
@@ -64,8 +69,8 @@ Create the secrets in aws secret manager => the name of mongodb-dev
 """
 
 
-def update_db_user_password(region, api_key, mongoAuth='mongodb-dev', password=generate_random_password(), ):
-    mongoCredentials = get_secret(region, mongoAuth)
+def update_db_user_password(api_key, mongoAuth, password=generate_random_password()):
+    mongoCredentials = get_secret(mongoAuth)
     for key, value in mongoCredentials.items():
         if key == 'GroupId':
             GroupId = value
@@ -79,7 +84,7 @@ def update_db_user_password(region, api_key, mongoAuth='mongodb-dev', password=g
             database = value
 
     # update the password in aws secret manager
-    update_secret(region, api_key, password)
+    update_secret(api_key, password)
 
     headers = {
         "Accept": "application/json",
@@ -107,5 +112,5 @@ def update_db_user_password(region, api_key, mongoAuth='mongodb-dev', password=g
 
 
 def lambda_handler(event, context):
-    print(update_db_user_password('eu-west-1', 'api_key', 'mongodb-dev'))
+    print(update_db_user_password('api_key', 'mongodb-dev'))
 
